@@ -5,15 +5,19 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=-I $(PWD)/include/
 
-all: hello_world hello_one hello_two hello_three
+all: hello hello_one hello_two hello_three
 
-hello_world: $(OBJ)/hello_world.o
-			$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/hello_world.o -o hello_world
-			mv hello_world $(BIN)
+hello: $(OBJ)/hello_main.o $(OBJ)/logger_fn.o
+			$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/hello_main.o $(OBJ)/logger_fn.o -o hello
+			mv hello $(BIN)
 
-$(OBJ)/hello_world.o: $(SRC)/hello_world.c
-			$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/hello_world.c
-			mv hello_world.o $(OBJ)
+$(OBJ)/hello_main.o: $(SRC)/hello_main.c
+			$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/hello_main.c
+			mv hello_main.o $(OBJ)
+
+$(OBJ)/logger_fn.o: $(SRC)/logger_fn.c
+			$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/logger_fn.c
+			mv logger_fn.o $(OBJ)
 
 hello_one: $(OBJ)/hello_one_main.o $(OBJ)/hello_one_print.o
 			$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/hello_one_main.o $(OBJ)/hello_one_print.o -o hello_one
@@ -55,7 +59,7 @@ clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
 install: hello_world hello_one hello_two hello_three
-		install -m 0755 hello_world $(BIN)/
+		install -m 0755 hello $(BIN)/
 		install -m 0755 hello_one $(BIN)/
 		install -m 0755 hello_two $(BIN)/
 		install -m 0755 hello_three $(BIN)/
