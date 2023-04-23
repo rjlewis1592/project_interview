@@ -3,21 +3,17 @@ CFLAGS=-g -Wall
 SRC=$(PWD)/src
 OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
-INCLUDE=-I $(PWD)/include/
+INCLUDE=$(PWD)/include/
 
-all: str
+all: my_strcpy
 
-str: $(OBJ)/str_main.o $(OBJ)/str_utils.o
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/str_main.o $(OBJ)/str_utils.o -o str
-	mv str $(BIN)
+my_strcpy: $(OBJ)/my_strcpy.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strcpy.o  -o my_strcpy
+	mv my_strcpy $(BIN)
 
-$(OBJ)/str_main.o: $(SRC)/str_main.c
-			$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/str_main.c
-			mv str_main.o $(OBJ)
-
-$(OBJ)/str_utils.o: $(SRC)/str_utils.c
-			$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/str_utils.c
-			mv str_utils.o $(OBJ)
+$(OBJ)/my_strcpy.o: $(SRC)/my_strcpy.c
+			$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strcpy.c
+			mv my_strcpy.o $(OBJ)
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
