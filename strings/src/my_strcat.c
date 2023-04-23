@@ -38,7 +38,7 @@ char *my_strcat(char *s2, size_t s2_bufsz, const char *s1)
     return s2;
 }
 
-#define S2_BUFSZ    (BUFSZ_8 + 1)
+#define S2_BUFSZ    BUFSZ_8
 
 int main(int argc, char *argv[])
 {
