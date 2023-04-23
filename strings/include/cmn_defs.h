@@ -13,3 +13,5 @@
 
 #define STR_SUCCESS     0
 #define STR_FAIL        -1
+
+#define MIN(m, n)       ((m) < (n) ? (m) : (n))

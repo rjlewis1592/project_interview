@@ -5,7 +5,7 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=$(PWD)/include/
 
-all: my_strcpy my_strcat my_strlen my_strrev_one
+all: my_strcpy my_strcat my_strlen my_strrev_one my_strncpy 
 
 my_strrev_one: $(OBJ)/my_strrev_one.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strrev_one.o  -o my_strrev_one
@@ -36,8 +36,17 @@ my_strcpy: $(OBJ)/my_strcpy.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	mv my_strcpy $(BIN)
 
 $(OBJ)/my_strcpy.o: $(SRC)/my_strcpy.c
-			$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strcpy.c
-			mv my_strcpy.o $(OBJ)
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strcpy.c
+	mv my_strcpy.o $(OBJ)
+
+my_strncpy: $(OBJ)/my_strncpy.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strncpy.o  -o my_strncpy
+	mv my_strncpy $(BIN)
+
+$(OBJ)/my_strncpy.o: $(SRC)/my_strncpy.c
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strncpy.c
+	mv my_strncpy.o $(OBJ)
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
