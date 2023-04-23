@@ -5,7 +5,15 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=$(PWD)/include/
 
-all: my_strcpy my_strcat my_strlen
+all: my_strcpy my_strcat my_strlen my_strrev_one
+
+my_strrev_one: $(OBJ)/my_strrev_one.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strrev_one.o  -o my_strrev_one
+	mv my_strrev_one $(BIN)
+
+$(OBJ)/my_strrev_one.o: $(SRC)/my_strrev_one.c
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strrev_one.c
+	mv my_strrev_one.o $(OBJ)
 
 my_strlen: $(OBJ)/my_strlen.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strlen.o  -o my_strlen
