@@ -3,21 +3,20 @@
 
 char *my_strcat(char *s1, const char *s2)
 {
-    size_t i = 0;
-    size_t s1_len = 0;
+    char *ts1 = NULL;
+    const char *ts2 = NULL;
 
     if (!s1 || !s2) {
         fprintf(stderr, "Err - Invalid input: s1 %p, s2 %p\n", s1, s2);
         return NULL;
     }
 
-    s1_len = strlen(s1);
-
-    for (i = 0; s1[i] != '\0'; i++) {
-        s1[s1_len + i] = s2[i];
+    ts1 = s1 + strlen(s1);
+    for (ts2 = s2; *ts2 != '\0'; ts2++, ts1++) {
+        *ts1 = *ts2;
     }
 
-    s1[s1_len + i] = '\0';
+    *ts1 = '\0';
 
     return s1;
 }
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
     printf("Before: s1 \"%s\", s2 \"%s\"\n", s1, s2);
 
     if (my_strcat(s1, s2) == NULL) {
-        printf("Err - my_strcart()\n");
+        printf("Err - my_strcat()\n");
     }
     printf("After: s1 \"%s\", s2 \"%s\"\n", s1, s2);
     

@@ -3,17 +3,18 @@
 
 char *my_strcpy(char *dst, const char *src)
 {
-    unsigned int i = 0;
+    char *td = NULL;
+    const char *ts = NULL;
 
     if (!dst || !src) {
         return NULL;
     }
 
-    for (i = 0; src[i] != '\0'; i++) {
-        dst[i] = src[i];
-    }
+    printf("%d@%s: src \"%s\"\n", __LINE__, __FUNCTION__, src);
 
-    dst[i] = '\0';
+    for (ts = src, td = dst; *ts != '\0'; ts++, td++) {
+        *td = *ts;
+    }
 
     printf("%d@%s: dst \"%s\"\n", __LINE__, __FUNCTION__, dst);
 

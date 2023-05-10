@@ -4,23 +4,26 @@
 char *my_strncpy(char *dst, const char *src, size_t n)
 {
     size_t i = 0;
+    char *td = NULL;
+    const char *ts = NULL;
 
     if (!dst || !src) {
         fprintf(stderr,  "Err - invalid args: dst %p, src %p\n", dst, src);
         return NULL;
     }
 
-    for (i = 0; (i < n) && (src[i] != '\0'); i++) {
-        dst[i] = src[i];
+    for (ts = src, td = dst; (i < n) && (*ts != '\0'); ts++, td++) {
+        *td = *ts;
+        i++;
     }
 
     for (; i < n; i++) {
-        dst[i] = '\0';
+        *td = '\0';
     }
 
     return dst;
-}
 
+}
 int main(int argc, char *argv[])
 {
     size_t n = 0;

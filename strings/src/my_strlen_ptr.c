@@ -4,14 +4,14 @@
 size_t my_strlen(const char *s)
 {
     size_t slen = 0;
-    unsigned int i = 0;
+    const char *ts = NULL;
 
     if (!s) {
         fprintf(stderr,  "Err - invalid input s %p. Exiting...\n", s);
         exit (EXIT_FAILURE);
     }
 
-    for (i = 0; s[i] != '\0'; i++) {
+    for (ts = s; *ts != '\0'; ts++) {
         slen++;
     }
 
