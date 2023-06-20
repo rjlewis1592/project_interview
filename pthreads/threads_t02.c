@@ -7,6 +7,7 @@ void *myturn(void *arg)
 {
     int *iptr = (int *)arg;
     int *j = (int *)malloc(sizeof(int));
+    printf("thread: j %p\n", j);
     *j = 999; 
     for (int i=0; i < 8; i++) {
         sleep(1);
@@ -29,11 +30,13 @@ int main()
 {
     pthread_t newthread;
     int v = 5;
-    int *result = NULL;
+    int *result_ptr = NULL;
     
     pthread_create(&newthread, NULL, myturn, &v);
     //myturn();
     yourturn();
-    pthread_join(newthread, &result);
-    printf("thread's done: v = %d, *result = %d\n", v, *result);
+    pthread_join(newthread, (void *) &result_ptr);
+    printf("thread's done: v = %d, *result = %d\n", v, *result_ptr);
+    printf("main: result %p\n", result_ptr);
+    free(result_ptr);
 }
