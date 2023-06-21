@@ -25,12 +25,8 @@ int main (int argc, char *argv[])
          */
         if (sscanf (line, "%d %64[^\n]", &seconds, message) < 2) {
             fprintf (stderr, "Bad command\n");
-        } if (strncasecmp(message, "exit", strlen("exit")) == 0) {
-            printf("EXITING...\n");
-            exit(EXIT_SUCCESS);
-        }
-        else {
-            printf ("Going to sleep for %d seconds\n", seconds);
+        } else {
+            printf ("Going to sleep for %d seconds. message \"%s\"\n", seconds, message);
             sleep(seconds);
             printf("(%d) seconds elapsed. Alarm message: \"%s\"\n", seconds, message);
         }
