@@ -6,7 +6,7 @@ BIN=$(PWD)/bin
 INSTALL_DIR=$(PWD)/install
 INCLUDE=-I $(PWD)/include/
 
-all: t01_alarm t01_alarm_fork
+all: t01_alarm t01_alarm_fork t01_alarm_thread
 
 t01_alarm: $(OBJ)/alarm.o
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm
@@ -24,11 +24,21 @@ $(OBJ)/alarm_fork.o: $(SRC)/alarm_fork.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_fork.c
 	mv alarm_fork.o $(OBJ)
 
+t01_alarm_thread: $(OBJ)/alarm_thread.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm_thread.o -o t01_alarm_thread
+	mv t01_alarm_thread $(BIN)
+
+$(OBJ)/alarm_thread.o: $(SRC)/alarm_thread.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_thread.c
+	mv alarm_thread.o $(OBJ)
+
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
 install:
 		install -m 0755 $(BIN)/t01_alarm $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t01_alarm_fork $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t01_alarm_thread $(INSTALL_DIR)/
     
 .PHONY: install
