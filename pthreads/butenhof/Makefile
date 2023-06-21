@@ -16,8 +16,8 @@ $(OBJ)/alarm.o: $(SRC)/alarm.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm.c
 	mv alarm.o $(OBJ)
 
-t01_alarm_fork: $(OBJ)/alarm.o
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm_fork
+t01_alarm_fork: $(OBJ)/alarm_fork.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm_fork.o -o t01_alarm_fork
 	mv t01_alarm_fork $(BIN)
 
 $(OBJ)/alarm_fork.o: $(SRC)/alarm_fork.c

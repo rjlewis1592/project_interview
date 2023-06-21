@@ -17,7 +17,7 @@ int main (int argc, char *argv[])
     char message[64];
 
     while (1) {
-        printf ("Alarm> ");
+        printf ("Alarm fork > ");
         if (fgets (line, sizeof (line), stdin) == NULL) exit (0);
         if (strlen (line) <= 1) continue;
 
@@ -37,16 +37,20 @@ int main (int argc, char *argv[])
                 /*
                  * If we're in the child, wait and then print a message
                  */
-                sleep (seconds);
-                printf ("(%d) %s\n", seconds, message);
-                exit (0);
+                pid_t child_pid = getpid();
+                printf("child process %d: sleeping for %d seconds\n", child_pid, seconds);
+                sleep(seconds);
+                printf("child process %d: elapsed (%d) seconds - message \"%s\". Exiting...\n", child_pid, seconds, message);
+                exit(0);
             } else {
                 /*
                  * In the parent, call waitpid() to collect any children that
                  * have already terminated.
                  */
+                printf("main process: waiting to reap child %d...\n", pid);
                 do {
                     pid = waitpid ((pid_t)-1, NULL, WNOHANG);
+                    printf("waitpid(): pid %d\n", (int)pid);
                     if (pid == (pid_t)-1)
                         errno_abort ("Wait for child");
                 } while (pid != (pid_t)0);
