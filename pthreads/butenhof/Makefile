@@ -56,6 +56,15 @@ $(OBJ)/alarm_mutex.o: $(SRC)/alarm_mutex.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_mutex.c
 	mv alarm_mutex.o $(OBJ)
 
+t01_alarm_mutex: $(OBJ)/t01_alarm_mutex.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/t01_alarm_mutex.o -o t01_alarm_mutex
+	mv t01_alarm_mutex $(BIN)
+
+$(OBJ)/t01_alarm_mutex.o: $(SRC)/t01_alarm_mutex.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/t01_alarm_mutex.c
+	mv t01_alarm_mutex.o $(OBJ)
+
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
@@ -66,5 +75,6 @@ install:
 		install -m 0755 $(BIN)/t00_lifecycle $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t01_lifecycle $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t00_alarm_mutex $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t01_alarm_mutex $(INSTALL_DIR)/
     
 .PHONY: install
