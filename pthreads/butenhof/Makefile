@@ -6,7 +6,7 @@ BIN=$(PWD)/bin
 INSTALL_DIR=$(PWD)/install
 INCLUDE=-I $(PWD)/include/
 
-all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle t00_alarm_mutex
+all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle t00_alarm_mutex t01_alarm_mutex
 
 t01_alarm: $(OBJ)/alarm.o
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm
