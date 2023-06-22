@@ -6,7 +6,7 @@ BIN=$(PWD)/bin
 INSTALL_DIR=$(PWD)/install
 INCLUDE=-I $(PWD)/include/
 
-all: t01_alarm t01_alarm_fork t01_alarm_thread
+all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle
 
 t01_alarm: $(OBJ)/alarm.o
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm
@@ -32,6 +32,21 @@ $(OBJ)/alarm_thread.o: $(SRC)/alarm_thread.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_thread.c
 	mv alarm_thread.o $(OBJ)
 
+t00_lifecycle: $(OBJ)/lifecycle.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/lifecycle.o -o t00_lifecycle
+	mv t00_lifecycle $(BIN)
+
+$(OBJ)/lifecycle.o: $(SRC)/lifecycle.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/lifecycle.c
+	mv lifecycle.o $(OBJ)
+
+t01_lifecycle: $(OBJ)/t01_lifecycle.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/t01_lifecycle.o -o t01_lifecycle
+	mv t01_lifecycle $(BIN)
+
+$(OBJ)/t01_lifecycle.o: $(SRC)/t01_lifecycle.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/t01_lifecycle.c
+	mv t01_lifecycle.o $(OBJ)
 
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
@@ -40,5 +55,7 @@ install:
 		install -m 0755 $(BIN)/t01_alarm $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t01_alarm_fork $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t01_alarm_thread $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t00_lifecycle $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t01_lifecycle $(INSTALL_DIR)/
     
 .PHONY: install
