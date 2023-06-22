@@ -1,12 +1,12 @@
 CC=gcc
-CFLAGS=-g -Wall -lpthread
+CFLAGS=-g -Wall -lpthread -DDEBUG
 SRC=$(PWD)/src
 OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INSTALL_DIR=$(PWD)/install
 INCLUDE=-I $(PWD)/include/
 
-all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle
+all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle t00_alarm_mutex
 
 t01_alarm: $(OBJ)/alarm.o
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm
@@ -48,6 +48,14 @@ $(OBJ)/t01_lifecycle.o: $(SRC)/t01_lifecycle.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/t01_lifecycle.c
 	mv t01_lifecycle.o $(OBJ)
 
+t00_alarm_mutex: $(OBJ)/alarm_mutex.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm_mutex.o -o t00_alarm_mutex
+	mv t00_alarm_mutex $(BIN)
+
+$(OBJ)/alarm_mutex.o: $(SRC)/alarm_mutex.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_mutex.c
+	mv alarm_mutex.o $(OBJ)
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
@@ -57,5 +65,6 @@ install:
 		install -m 0755 $(BIN)/t01_alarm_thread $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t00_lifecycle $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t01_lifecycle $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t00_alarm_mutex $(INSTALL_DIR)/
     
 .PHONY: install
