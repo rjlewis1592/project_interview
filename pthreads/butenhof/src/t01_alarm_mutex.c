@@ -37,6 +37,7 @@ alarm_t *alarm_list = NULL;
 void *alarm_thread (void *arg)
 {
     alarm_t *alarm;
+    alarm_t *next = NULL;
     int sleep_time;
     time_t now;
     int status;
@@ -47,10 +48,17 @@ void *alarm_thread (void *arg)
      */
     while (1) {
         status = pthread_mutex_lock (&alarm_mutex);
-        if (status != 0)
+        if (status != 0) {
             err_abort (status, "Lock mutex");
+        }
         alarm = alarm_list;
-
+#ifdef DEBUG
+        printf ("%s: [list: ", __FUNCTION__);
+        for (next = alarm_list; next != NULL; next = next->link) {
+            printf ("%d(%ds, %d)[\"%s\"] ", next->time, next->seconds, next->time - time (NULL), next->message);
+        }
+        printf ("]\n");
+#endif
         /*
          * If the alarm list is empty, wait for one second. This
          * allows the main thread to run, and read another
@@ -59,18 +67,19 @@ void *alarm_thread (void *arg)
          * result is less than 0 (the time has passed), then set
          * the sleep_time to 0.
          */
-        if (alarm == NULL)
+        if (alarm == NULL) {
+            printf("%s: Empty alarm list. sleep 1 second\n", __FUNCTION__);
             sleep_time = 1;
-        else {
+        } else {
             alarm_list = alarm->link;
+            printf("%s: remove & process first alarm %d in the list\n", __FUNCTION__, alarm->seconds);
             now = time (NULL);
             if (alarm->time <= now)
                 sleep_time = 0;
             else
                 sleep_time = alarm->time - now;
 #ifdef DEBUG
-            printf ("[waiting: %d(%d)\"%s\"]\n", alarm->time,
-                sleep_time, alarm->message);
+            printf ("[waiting: %d(%ds, %d)\"%s\"]\n", alarm->time, alarm->seconds, sleep_time, alarm->message);
 #endif
             }
 
@@ -85,17 +94,19 @@ void *alarm_thread (void *arg)
         status = pthread_mutex_unlock (&alarm_mutex);
         if (status != 0)
             err_abort (status, "Unlock mutex");
-        if (sleep_time > 0)
+        if (sleep_time > 0) {
+            printf("%s: sleeping for %d seconds\n", __FUNCTION__, sleep_time);
             sleep (sleep_time);
-        else
-            sched_yield ();
-
+        } else {
+            printf("%s: Yield processor to main thread\n", __FUNCTION__);
+            sched_yield();
+        }
         /*
          * If a timer expired, print the message and free the
          * structure.
          */
         if (alarm != NULL) {
-            printf ("(%d) %s\n", alarm->seconds, alarm->message);
+            printf ("%s: Alarm expierd - (%d) %s\n", __FUNCTION__, alarm->seconds, alarm->message);
             free (alarm);
         }
     }
@@ -108,12 +119,13 @@ int main (int argc, char *argv[])
     alarm_t *alarm, **last, *next;
     pthread_t thread;
 
-    status = pthread_create (
-        &thread, NULL, alarm_thread, NULL);
-    if (status != 0)
+    status = pthread_create(&thread, NULL, alarm_thread, NULL);
+    if (status != 0) {
         err_abort (status, "Create alarm thread");
+    }
+
     while (1) {
-        printf ("alarm> ");
+        printf ("%s: alarm> ", __FUNCTION__);
         if (fgets (line, sizeof (line), stdin) == NULL) exit (0);
         if (strlen (line) <= 1) continue;
         alarm = (alarm_t*)malloc (sizeof (alarm_t));
@@ -131,8 +143,11 @@ int main (int argc, char *argv[])
             free (alarm);
         } else {
             status = pthread_mutex_lock (&alarm_mutex);
-            if (status != 0)
+            if (status != 0) {
                 err_abort (status, "Lock mutex");
+            }
+
+            printf("%s: Adding alaram for %d seconds\n", __FUNCTION__, alarm->seconds);
             alarm->time = time (NULL) + alarm->seconds;
 
             /*
@@ -161,10 +176,10 @@ int main (int argc, char *argv[])
                 alarm->link = NULL;
             }
 #ifdef DEBUG
-            printf ("[list: ");
-            for (next = alarm_list; next != NULL; next = next->link)
-                printf ("%d(%d)[\"%s\"] ", next->time,
-                    next->time - time (NULL), next->message);
+            printf ("%s: [list: ", __FUNCTION__);
+            for (next = alarm_list; next != NULL; next = next->link) {
+                printf ("%d(%ds, %d)[\"%s\"] ", next->time, next->seconds, next->time - time (NULL), next->message);
+            }
             printf ("]\n");
 #endif
             status = pthread_mutex_unlock (&alarm_mutex);
