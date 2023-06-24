@@ -6,7 +6,7 @@ BIN=$(PWD)/bin
 INSTALL_DIR=$(PWD)/install
 INCLUDE=-I $(PWD)/include/
 
-all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle t00_alarm_mutex t01_alarm_mutex t00_trylock t01_trylock t00_cond_static t00_cond_dynamic
+all: t01_alarm t01_alarm_fork t01_alarm_thread t00_lifecycle t01_lifecycle t00_alarm_mutex t01_alarm_mutex t00_trylock t01_trylock t00_cond_static t00_cond_dynamic t00_alarm_cond t01_alarm_cond
 
 t01_alarm: $(OBJ)/alarm.o
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm.o -o t01_alarm
@@ -96,6 +96,22 @@ $(OBJ)/cond_dynamic.o: $(SRC)/cond_dynamic.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/cond_dynamic.c
 	mv cond_dynamic.o $(OBJ)
 
+t00_alarm_cond: $(OBJ)/alarm_cond.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/alarm_cond.o -o t00_alarm_cond
+	mv t00_alarm_cond $(BIN)
+
+$(OBJ)/alarm_cond.o: $(SRC)/alarm_cond.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/alarm_cond.c
+	mv alarm_cond.o $(OBJ)
+
+t01_alarm_cond: $(OBJ)/t01_alarm_cond.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJ)/t01_alarm_cond.o -o t01_alarm_cond
+	mv t01_alarm_cond $(BIN)
+
+$(OBJ)/t01_alarm_cond.o: $(SRC)/t01_alarm_cond.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(SRC)/t01_alarm_cond.c
+	mv t01_alarm_cond.o $(OBJ)
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
@@ -111,5 +127,7 @@ install:
 		install -m 0755 $(BIN)/t01_trylock $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t00_cond_static $(INSTALL_DIR)/
 		install -m 0755 $(BIN)/t00_cond_dynamic $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t00_alarm_cond $(INSTALL_DIR)/
+		install -m 0755 $(BIN)/t01_alarm_cond $(INSTALL_DIR)/
     
 .PHONY: install
