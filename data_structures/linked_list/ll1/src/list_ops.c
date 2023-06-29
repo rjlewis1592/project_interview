@@ -7,9 +7,8 @@
 static node_t *create_node(int value)
 {
 	node_t *tmp = (node_t *)malloc(sizeof(node_t));
-
 	if (!tmp) {
-		fprintf(stderr, "malloc(): %s\n", strerror(errno));
+		fprintf(stderr, "malloc(): %s (%d)\n", strerror(errno), errno);
 		return NULL;
 	}
 
@@ -22,16 +21,15 @@ static node_t *create_node(int value)
 node_t* insert_front(node_t *head, int value)
 {
 	node_t *new_node = create_node(value);
-
 	if (!new_node) {
-		fprintf(stderr, "%s: Cannot create new node. Return.\n", __func__);
-		return new_node;
+		fprintf(stderr, "%s: Cannot create new node. Return orginal list head.\n", __func__);
+		return head;
 	}
 
 	new_node->next = head;
 	head = new_node;
 
-	return head;
+	return head; // new head
 }
 
 node_t* insert_rear(node_t *head, int value)
@@ -42,14 +40,14 @@ node_t* insert_rear(node_t *head, int value)
 	new = create_node(value);
 
 	if (new == NULL) {
-		fprintf(stderr, "%s: Cannot create new node. Return.\n", __func__);
-		return new;
+		fprintf(stderr, "%s: Cannot create new node. Return original list head.\n", __func__);
+		return head;
 	}
 
-	if (head == NULL) {
+	if (head == NULL) { // empty list
 		head = new;
 		head->next = NULL;
-		return new;
+		return head;
 	} 
 
 	tmp = head;
@@ -116,90 +114,6 @@ node_t* insert_at_position(node_t *head,  int value, unsigned int pos)
 	return head;
 }
 
-int insert_at_position2(node_t **head, int value, unsigned int pos)
-{
-	size_t list_sz;
-	node_t *new_node = NULL;
-
-	assert(head);
-
-	list_sz = list_size(*head);
-
-	if (pos < 1 || (pos > (list_sz + 1))) {
-		fprintf(stderr, "%s: invalid position %d, list_sz %zu\n", __func__, pos, list_sz);
-		return -1;
-
-	}
-
-	if ((new_node = create_node(value)) == NULL) {
-		fprintf(stderr, "%s: could not create a new node\n", __func__);
-		return 1;
-	}
-
-	while (pos--) {
-		if (pos == 0) {
-			new_node->next = *head;
-			*head = new_node;
-		} else {
-			head = &((*head)->next);
-		}
-	}
-
-	return 0;
-}
-
-node_t* insert_at_position3(node_t *head_ptr, int value, unsigned int pos)
-{
-	node_t **head = &head_ptr;
-	size_t list_sz;
-	node_t *new_node = NULL;
-
-	assert(head);
-
-	list_sz = list_size(*head);
-
-	if (pos < 1 || (pos > (list_sz + 1))) {
-		fprintf(stderr, "%s: invalid position %d, list_sz %zu\n", __func__, pos, list_sz);
-		return head_ptr;
-
-	}
-
-	if ((new_node = create_node(value)) == NULL) {
-		fprintf(stderr, "%s: could not create a new node\n", __func__);
-		return head_ptr;
-	}
-
-	while (pos--) {
-		if (pos == 0) {
-			new_node->next = *head;
-			*head = new_node;
-		} else {
-			head = &((*head)->next);
-		}
-	}
-
-	return head_ptr;
-}
-int insert_rear2(node_t **head_dptr, int value)
-{
-        assert(head_dptr); 
-
-        node_t *new_node = create_node(value);
-
-        if (!new_node) {
-                fprintf(stderr, "%s: Could not create new node. Return.\n", __func__);
-                return LIST_FAILURE;
-        }
-
-        while (*head_dptr) {
-                head_dptr = &((*head_dptr)->next);
-        }
-
-        *head_dptr = new_node;
-
-        return LIST_SUCCESS;
-}
-
 
 node_t* delete_front(node_t *head, int *data)
 {
@@ -256,84 +170,6 @@ node_t* delete_rear(node_t *head, int *data)
 
 }
 
-node_t *delete_rear2(node_t *head, int *retval)
-{
-	node_t *entry = NULL;
-	node_t *prev = NULL;
-
-
-	if (head == NULL) {
-		fprintf(stderr, "%s: empty list\n", __func__);
-		return NULL;
-	}
-
-	entry = head;
-	prev = NULL;
-
-	while (entry->next != NULL) {
-		prev = entry;
-		entry = entry->next;
-	}	
-
-	*retval = entry->data;
-
-	if (prev == NULL) { // No previous node i.e only one node in the list
-		head = NULL;
-	} else {
-		prev->next = entry->next; // NULL
-	}
-
-	free(entry);
-
-	return head;
-
-}
-
-int delete_rear3(node_t **head_dptr, int *retval)
-{
-	assert(head_dptr);
-
-	printf("%d@%s: list head %p\n", __LINE__, __func__, *head_dptr);
-
-	if ((*head_dptr) == NULL) {
-		fprintf(stderr, "%s: empty list\n", __func__);
-		return LIST_FAILURE;
-	}
-
-	while ((*head_dptr)->next != NULL) {
-		head_dptr = &((*head_dptr)->next);
-	}
-
-	*retval = (*head_dptr)->data;
-	printf("%s: delete node %d\n", __func__, *retval);
-
-	free((*head_dptr));
-
-	*head_dptr = NULL;
-
-	printf("%d@%s: list head %p\n", __LINE__, __func__, *head_dptr);
-	return LIST_SUCCESS;
-}
-
-void list_display(node_t *head)
-{
-	node_t *tmp = NULL;
-
-	if (head == NULL) {
-		fprintf(stderr, "Empty list\n");
-		return;
-	}
-
-	tmp = head;
-	while (tmp != NULL) {
-		printf("(%d) -> ", tmp->data);
-		tmp = tmp->next;
-	}
-
-	printf("NULL\n");
-	return;
-}
-
 void delete_list(node_t *head)
 {
 	node_t *current = NULL;
@@ -365,18 +201,35 @@ void delete_list(node_t *head)
 size_t list_size(node_t *head)
 {
 	size_t count = 0;
-	node_t *temp = NULL;
+	node_t *tmp = NULL;
 
 	if (head == NULL) {
 		fprintf(stderr, "%s: emtpy list\n", __func__);
 		return 0;
 	}
 
-	temp = head;
-	while (temp != NULL) {
+	for (tmp = head; tmp != NULL; tmp = tmp->next) {
 		count++;
-		temp = temp->next;
 	}
 
 	return count;
+}
+
+void list_display(node_t *head)
+{               
+     node_t *tmp = NULL;
+ 
+     if (head == NULL) {
+         fprintf(stderr, "Empty list\n");
+         return;
+     }
+     
+     tmp = head;
+     while (tmp != NULL) {
+         printf("(%d) -> ", tmp->data);
+         tmp = tmp->next;
+     }
+ 
+     printf("NULL\n");
+     return;
 }
