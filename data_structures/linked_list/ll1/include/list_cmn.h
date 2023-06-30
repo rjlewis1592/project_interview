@@ -7,6 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <unistd.h>
+#include <time.h>
 #include <errno.h>
 
 #define LIST_SUCCESS	0

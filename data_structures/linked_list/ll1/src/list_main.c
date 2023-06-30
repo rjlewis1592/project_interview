@@ -13,7 +13,9 @@
 
 int main()
 {
-	int value, data;
+	int i, n, value, data;
+    int lower = 10;
+    int upper = 50;
 	unsigned int op, pos;
 	struct node *head = NULL;
 
@@ -26,12 +28,18 @@ int main()
 		switch (op)
 		{
 			case INSERT_FRONT: // 1U
-				printf("Enter the value to insert @ front: ");
-				scanf("%d", &value);
-				head = insert_front(head, value); 		
-				if (!head) {
-					printf("Error inserting @ front\n");
-				}
+				//printf("Enter the value to insert @ front: ");
+				printf("Enter the no of values to insert @ front: ");
+				scanf("%d", &n);
+				for (i = 0; i < n; i++) {
+        			srand(time(NULL));
+        			sleep(1);
+        			value = rand() % (upper + 1 - lower) + lower;
+					head = insert_front(head, value); 		
+					if (!head) {
+						printf("Error inserting @ front\n");
+					}
+    			}
 #ifdef LIST_DEBUG
 				list_display(head); 		
 #endif // LIST_DEBUG
