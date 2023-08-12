@@ -91,7 +91,7 @@ int main()
 			case INSERT_BEFORE_KEY: // 6U
 				printf("Enter (value, pos): ");
 				scanf("%d %u", &value, &pos);
-				insert_at_position(&head, value, pos);
+				insert_before_key(&head, value, pos);
 				break;
 
 			case DELETE_FRONT: // 6U

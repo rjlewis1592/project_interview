@@ -169,7 +169,6 @@ int insert_after_key(node_t **head, int key_value, int new_value)
 		fprintf(stderr, "%s, %d: key %d not found! Inserting %d to the end of list\n", __FUNCTION__, __LINE__, key_value, new_value);
 #endif // LIST_DEBUG
 		*head = new_node;
-		return 0;
 	} else {
 #ifdef LIST_DEBUG
 		fprintf(stderr, "%s, %d: Success - found %d key. Inserting new value %d after it\n", __FUNCTION__, __LINE__, key_value, new_value);
@@ -181,6 +180,41 @@ int insert_after_key(node_t **head, int key_value, int new_value)
 	return 0;
 }
 
+int insert_before_key(node_t **head, int key_value, int new_value)
+{
+	node_t *prv = NULL;
+	node_t *new_node = NULL;
+
+	if (head == NULL) {
+		fprintf(stderr, "%s, %d - Error. head %p\n", __FUNCTION__, __LINE__, head);
+		return -1;
+	}
+
+	new_node = create_node(new_value);
+	if (new_node == NULL) {
+		fprintf(stderr, "%s, %d: Error - could not create new node for value %d\n", __FUNCTION__, __LINE__, new_value);
+		return -1;
+	}
+
+	prv = *head;
+
+	while (((*head) != NULL) && ((*head)->data != key_value)) {
+		prv = *head;
+		head = &((*head)->next);
+	}
+
+	if (*head == NULL) {
+#ifdef LIST_DEBUG
+		fprintf(stderr, "%s, %d: key %d not found! Inserting %d to the end of list\n", __FUNCTION__, __LINE__, key_value, new_value);
+#endif // LIST_DEBUG
+	} else {
+#ifdef LIST_DEBUG
+		fprintf(stderr, "%s, %d: Success - found %d key. Inserting new value %d after it\n", __FUNCTION__, __LINE__, key_value, new_value);
+#endif // LIST_DEBUG
+	}
+
+	return 0;
+}
 int insert_at_position(node_t **head, int value, unsigned int pos)
 {
 	return 0;
