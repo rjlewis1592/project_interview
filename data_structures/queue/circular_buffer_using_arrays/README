@@ -1,0 +1,4 @@
+circular buffer implementation with arrays by dynamic memory allocaiton on heap
+read and write indices are set to -1 initially.
+When enqueing the first time, both read and write indices are set to 0
+If only one element is present in circular buffer, the read and write indices are set to -1 after dequeing it.
