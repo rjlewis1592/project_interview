@@ -1,0 +1,1 @@
+Linear queue implementation using single linked list.
