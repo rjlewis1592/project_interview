@@ -5,7 +5,7 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=$(PWD)/include/
 
-all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr
+all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr my_strstr
 
 my_strrev_one: $(OBJ)/my_strrev_one.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strrev_one.o  -o my_strrev_one
@@ -95,10 +95,19 @@ $(OBJ)/my_strncpy_ptr.o: $(SRC)/my_strncpy_ptr.c
 	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strncpy_ptr.c
 	mv my_strncpy_ptr.o $(OBJ)
 
+my_strstr: $(OBJ)/my_strstr.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strstr.o  -o my_strstr
+	mv my_strstr $(BIN)
+
+$(OBJ)/my_strstr.o: $(SRC)/my_strstr.c
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strstr.c
+	mv my_strstr.o $(OBJ)
+
+
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
 
-install: str
-		install -m 0755 str $(BIN)/
+#install: str
+#		install -m 0755 str $(BIN)/
     
 .PHONY: install

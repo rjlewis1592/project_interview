@@ -1,6 +1,7 @@
 #include "cmn_hdr.h"
 #include "cmn_defs.h"
 
+#if 0
 char *my_strcat(char *s1, const char *s2)
 {
     char *ts1 = NULL;
@@ -20,6 +21,25 @@ char *my_strcat(char *s1, const char *s2)
 
     return s1;
 }
+#else
+char *my_strcat(char *s1, const char *s2)
+{
+
+    if (!s1 || !s2) {
+        fprintf(stderr, "Err - Invalid input: s1 %p, s2 %p\n", s1, s2);
+        return NULL;
+    }
+
+    s1 = s1 + strlen(s1);
+    for (;*s2 != '\0'; s1++, s2++) {
+        *s1 = *s2;
+    }
+
+    *s1 = '\0';
+
+    return s1;
+}
+#endif
 
 int main(int argc, char *argv[])
 {

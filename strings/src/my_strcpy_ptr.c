@@ -1,6 +1,7 @@
 #include "cmn_hdr.h"
 #include "cmn_defs.h"
 
+#if 0
 char *my_strcpy(char *dst, const char *src)
 {
     char *td = NULL;
@@ -20,6 +21,27 @@ char *my_strcpy(char *dst, const char *src)
 
     return dst;
 }
+#else
+char *my_strcpy(char *dst, const char *src)
+{
+    char *td = NULL;
+    const char *ts = NULL;
+
+    if (!dst || !src) {
+        return NULL;
+    }
+
+    printf("%d@%s: src \"%s\"\n", __LINE__, __FUNCTION__, src);
+
+    for (ts = src, td = dst; *ts != '\0'; ts++, td++) {
+        *td = *ts;
+    }
+
+    printf("%d@%s: dst \"%s\"\n", __LINE__, __FUNCTION__, dst);
+
+    return dst;
+}
+#endif
 
 int main(int argc, char *argv[])
 {
