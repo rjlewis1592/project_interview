@@ -99,7 +99,7 @@ static void create_list(node_t **head)
 
 	if (ch == 'y')
 	{
-		printf("Eneter the no of elements to insert: ");
+		printf("Enter the no of elements to insert: ");
 		scanf("%d", &n);
 		printf("Enter %d elements: ", n);
 		for (i = 0; i < n; i++) {
@@ -109,8 +109,7 @@ static void create_list(node_t **head)
 		if (ret == LIST_OP_FAILURE) {
 			fprintf(stderr, "Fail: insert_reat()\n");
 		}
-	} else
-	{
+	} else {
 		printf("Enter the no of values to insert @ rear: ");
 		scanf("%d", &n);
 		for (i = 0; i < n; i++) {
