@@ -217,19 +217,20 @@ size_t list_size(node_t *head)
 
 void list_display(node_t *head)
 {               
-     node_t *tmp = NULL;
+     //node_t *tmp = NULL;
  
      if (head == NULL) {
          fprintf(stderr, "Empty list\n");
          return;
      }
      
-     tmp = head;
-     while (tmp != NULL) {
-         printf("(%d) -> ", tmp->data);
-         tmp = tmp->next;
+     //tmp = head;
+     while (head != NULL) {
+         printf("(%d) -> ", head->data);
+         head = head->next;
      }
  
-     printf("NULL\n");
+    printf("\n");
+     //printf("NULL\n");
      return;
 }
