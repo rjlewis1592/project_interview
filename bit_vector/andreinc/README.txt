@@ -1,0 +1,1 @@
+Bitwise exercises from https://www.andreinc.net/2023/02/01/demystifying-bitwise-ops#transforming-numbers-from-the-decimal-to-other-number-systems-binary-hexadecimal-etc
