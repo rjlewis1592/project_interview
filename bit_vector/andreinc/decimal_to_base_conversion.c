@@ -14,6 +14,17 @@
 #define SET_0(name, index) (name[SET_W(index)] &= ~SET_MASK(index))
 #define SET_GET(name, index) (name[SET_W(index)] & SET_MASK(index))
 
+#define print_bits_generic(where, n) _Generic((n), \
+                uint8_t: print_bits_uint8_t, \
+                int8_t: print_bits_uint8_t, \
+                uint16_t: print_bits_uint16_t, \
+                int16_t: print_bits_uint16_t, \
+                uint32_t: print_bits_uint32_t, \
+                int32_t: print_bits_uint32_t, \
+                uint64_t: print_bits_uint64_t, \
+                int64_t: print_bits_uint64_t) \
+            (where, n)
+
 #if 0
 enum {
     a = 255,
@@ -154,7 +165,7 @@ uint16_t get_bits(uint16_t n, int i, int j)
 
 void replace_bits(uint16_t *n, uint16_t m, uint8_t i, uint8_t j)
 {
-    (*n) =  (*n) & (~((~(~0x0U << (j - i + 1))) << (i))) | ((m) << (i));
+    (*n) =  ((*n) & ((~((~(~0x0U << (j - i + 1))) << (i))) | ((m) << (i))));
 }
 
 void pairwise_swap(uint16_t *u16)
@@ -162,30 +173,30 @@ void pairwise_swap(uint16_t *u16)
     *u16 = (((*u16) & 0xAAAAU) >> 0x1U) | (((*u16) & 0x5555U) << 0x1U);
 }
 
-void print_bits_uint8_t(uint8_t n)
+void print_bits_uint8_t(FILE *out, uint8_t n)
 {
-    printf("%s%s", bit_rep[n >> 4U], bit_rep[n & 0xFU]);
+    fprintf(out, "%s%s", bit_rep[n >> 4U], bit_rep[n & 0xFU]);
 }
 
-void print_bits_uint16_t(uint16_t n)
+void print_bits_uint16_t(FILE *out, uint16_t n)
 {
-    print_bits_uint8_t((n >> 8U));
+    print_bits_uint8_t(out, (n >> 8U));
     printf(" ");
-    print_bits_uint8_t((n & 0xFFU));
+    print_bits_uint8_t(out, (n & 0xFFU));
 }
 
-void print_bits_uint32_t(uint32_t n)
+void print_bits_uint32_t(FILE *out, uint32_t n)
 {
-    print_bits_uint16_t((n >> 16U));
+    print_bits_uint16_t(out, (n >> 16U));
     printf(" ");
-    print_bits_uint16_t((n & 0xFFFFU));
+    print_bits_uint16_t(out, (n & 0xFFFFU));
 }
 
-void print_bits_uint64_t(uint64_t n)
+void print_bits_uint64_t(FILE *out, uint64_t n)
 {
-        print_bits_uint32_t((n >> 32U));
+        print_bits_uint32_t(out, (n >> 32U));
         printf(" ");
-        print_bits_uint32_t((n & 0xFFFFFFFFU));
+        print_bits_uint32_t(out, (n & 0xFFFFFFFFU));
 }
 
 void revsere_str(char s[])
@@ -287,6 +298,27 @@ void print_uint16_t_bits_simple_rec(uint16_t u16_n)
     return;
 }
 
+void demo_print_bits_generic(void)
+{
+    uint8_t a = 145;
+    uint16_t b = 1089;
+    uint32_t c = 30432;
+    int32_t d = 3232;
+
+    printf("uint8_t 145: "); // works on uint8_t !
+    print_bits_generic(stdout, a);
+    printf("\n"); // works on uint8_t !
+    printf("uint16_t 1089: "); // works on uint8_t !
+    print_bits_generic(stdout, b);
+    printf("\n"); // works on uint16_t !
+    printf("uint32_t 1089: "); // works on uint8_t !
+    print_bits_generic(stdout, c);
+    printf("\n"); // works on uint32_t !
+    printf("int32_t 1089: "); // works on uint8_t !
+    print_bits_generic(stdout, d);
+    printf("\n"); // works on int32_t !
+}
+
 int main(int argc, char *argv[])
 {
     uint32_t decimal_num, base;
@@ -304,6 +336,8 @@ int main(int argc, char *argv[])
     base = atoi(argv[2]);
 
     LOG_DBG("decimal_num %u, base %u\n", decimal_num, base);
+
+    demo_print_bits_generic();
 
     print_in_base(decimal_num, base);
 
@@ -324,54 +358,54 @@ int main(int argc, char *argv[])
     printf("Enter uint8_t number: ");
     scanf("%hhu", &u8_n);
 
-    print_bits_uint8_t(u8_n);
+    print_bits_uint8_t(stdout, u8_n);
     printf("\n");
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
 
     printf("Enter uint32_t number: ");
     scanf("%u", &u32_n);
-    print_bits_uint32_t(u32_n);
+    print_bits_uint32_t(stdout, u32_n);
     printf("\n");
 
     printf("Enter uint64_t number: ");
     scanf("%llu", &u64_n);
-    print_bits_uint64_t(u64_n);
+    print_bits_uint64_t(stdout, u64_n);
     printf("\n");
 
-    print_bits_uint8_t(255U);
+    print_bits_uint8_t(stdout, 255U);
     printf("\n");
-    print_bits_uint16_t(65535U);
+    print_bits_uint16_t(stdout, 65535U);
     printf("\n");
-    print_bits_uint32_t(4294967295U);
+    print_bits_uint32_t(stdout, 4294967295U);
     printf("\n");
-    print_bits_uint64_t(18446744073709551615ULL);
+    print_bits_uint64_t(stdout, 18446744073709551615ULL);
     printf("\n");
 
 
     u16_n = 0x0U;
     printf("Enter uint16_t number for pairwise swap: ");
     scanf("%hu", &u16_n);
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
     pairwise_swap(&u16_n);
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
 
     u16_n = 0xDCBEu; // 1101 1100 1011 1110
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
     replace_bits(&u16_n, 0x1u, 3, 6);
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
 
 
     u16_n = 0xDCBEu; // 1101 1100 1011 1110
     printf("GET BITS: u16_n: ");
-    print_bits_uint16_t(u16_n);
+    print_bits_uint16_t(stdout, u16_n);
     printf("\n");
     printf("GET BITS:  ");
-    print_bits_uint16_t(get_bits(u16_n, 3, 6));
+    print_bits_uint16_t(stdout, get_bits(u16_n, 3, 6));
     printf("\n");
 
     printf("Enter a uint16_t number: ");
