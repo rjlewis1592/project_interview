@@ -32,6 +32,7 @@
 #define REV_LIST_IN_K_GROUPS_ALL 		28U
 #define REV_LIST_IN_K_GROUPS 			29U
 #define ADD_NUMBERS_IN_TWO_LISTS		30U
+#define SUB_NUMBERS_IN_TWO_LISTS		31U
 #define LIST_EXIT						99U
 
 static void create_list(node_t **head);
@@ -155,7 +156,7 @@ int main()
 		printf("18.PRINT_NTH_NODE_FROM_LAST, 19.DEL_LAST_OCCURANCE, 20.DEL_MID_NODE, 21.DEL_N_AFTER_M\n");
 		printf("22.PAIRWISE_SWAP_NODES_DATA, 23.PAIRWISE_SWAP_NODES, 24.SORT_012_NODES, 25.MERGE_TWO_LIST\n");
 		printf("26.INSERT_2ND_INTO_1ST, 27.RM_EVERY_KTH_NODE, 28.REV_LIST_IN_K_GROUPS_ALL, 29.REV_LIST_IN_K_GROUPS\n");
-		printf("30.ADD_NUMBERS_IN_TWO_LISTS\n");
+		printf("30.ADD_NUMBERS_IN_TWO_LISTS, 31.SUB_NUMBERS_IN_TWO_LISTS\n");
 		printf("99.LIST_EXIT\n");
 		scanf("%u", &op);
 
@@ -676,12 +677,56 @@ int main()
 					fprintf(stderr, "Error: add_numbers_in_two_lists()\n");
 				} else {
 #ifdef LIST_DEBUG
+					better_list_display(&first,  "FIRST_LIST : "); 		
+					better_list_display(&second, "SECOND_LIST: "); 		
 					better_list_display(&result, "RESULT_LIST: "); 		
 #endif // LIST_DEBUG
 					delete_list(&first);
 					delete_list(&second);
 				}
 				break;
+
+			case SUB_NUMBERS_IN_TWO_LISTS:				// 31U
+				printf("***** Creating first numeric list ******\n");
+				printf("Enter first numeric string: ");
+				scanf("%s", numstr);
+				printf("numstr \"%s\"\n", numstr);
+				for (i = 0; numstr[i] != '\0'; i++) {
+					int val = 0;
+					if (isdigit(numstr[i]) == 0) { // not a digit
+						delete_list(&head);
+					}
+					val = numstr[i] - '0';
+					insert_rear(&first, val);				
+				}
+				printf("***** Creating second numeric list ******\n");
+				printf("Enter second numeric string: ");
+				scanf("%s", numstr);
+				printf("numstr \"%s\"\n", numstr);
+				for (i = 0; numstr[i] != '\0'; i++) {
+					int val = 0;
+					if (isdigit(numstr[i]) == 0) { // not a digit
+						delete_list(&head);
+					}
+					val = numstr[i] - '0';
+					insert_rear(&second, val);
+				}
+#ifdef LIST_DEBUG
+				better_list_display(&first,  "FIRST_LIST : "); 		
+				better_list_display(&second, "SECOND_LIST: "); 		
+#endif // LIST_DEBUG
+				ret = sub_numbers_in_two_lists(&first, &second, &result);
+				if (ret == LIST_OP_FAILURE) {
+					fprintf(stderr, "Error: sub_numbers_in_two_lists()\n");
+				} else {
+#ifdef LIST_DEBUG
+					better_list_display(&result, "RESULT_LIST: "); 		
+#endif // LIST_DEBUG
+					delete_list(&first);
+					delete_list(&second);
+				}
+				break;
+
 			case LIST_EXIT:	 // 99U
 				printf("Exiting...\n");
 				goto exit_list;

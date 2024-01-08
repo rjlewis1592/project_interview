@@ -1280,6 +1280,43 @@ int add_numbers_in_two_lists(node_t **first, node_t **second, node_t **result)
 }
 #endif
 
+int sub_numbers_in_two_lists(node_t **first, node_t **second, node_t **result)
+{
+    int diff = INT_MIN;
+    int borrow = INT_MIN;
+
+    if ((first == NULL) || (second == NULL) || (result == NULL)) {
+        LOG_ERR("first %p, second %p, result %p", first, second, result);
+        return LIST_OP_FAILURE;
+    }
+
+    list_reverse(first);
+    list_reverse(second);
+
+    diff = 0;
+    borrow = 0;
+    while ((*first != NULL) && (*second) != NULL) {
+        if ((((*first)->data)) < ((*second)->data)) {
+            diff = (10 + ((*first)->data + borrow)) - ((*second)->data);
+            borrow = -1;
+        } else {
+            diff = ((*first)->data + borrow) - ((*second)->data);
+        }
+
+        insert_front(result, diff);
+
+        first = &((*first)->next);
+        second = &((*second)->next);
+    }
+
+    while((*first) != NULL) {
+        insert_front(result , (borrow + (*first)->data));
+        first = &((*first)->next);
+    }
+
+    return LIST_OP_SUCCESS;
+}
+
 int list_exit(node_t **head)
 {
     return delete_list(head);

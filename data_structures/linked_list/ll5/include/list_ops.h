@@ -37,6 +37,7 @@ node_t *rev_list_in_k_groups_all(node_t **head, int k);                 // REV_L
 #endif
 node_t *rev_list_in_k_groups(node_t **head, int k);                     // REV_LIST_IN_K_GROUPS     29U
 int add_numbers_in_two_lists(node_t **first, node_t **second, node_t **result);          // ADD_NUMBERS_IN_TWO_LISTS 30U
+int sub_numbers_in_two_lists(node_t **first, node_t **second, node_t **result);          // SUB_NUMBERS_IN_TWO_LISTS 31U
 int list_exit(node_t **head);                                           // LIST_EXIT			    99U
 
 
