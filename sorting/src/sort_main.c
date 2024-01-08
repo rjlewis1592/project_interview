@@ -3,7 +3,8 @@
 #include "sort_ops.h"
 
 enum {
-    BUBBLE_SORT     = 1,
+    BUBBLE_SORT     = 0,
+    BUBBLE_SORT_OPTIMIZED     = 1,
     SELECTION_SORT  = 2,
     INSERTION_SORT  = 3,
     MERGE_SORT      = 4,
@@ -145,7 +146,7 @@ void do_selective_run()
 
     while (1) {
         printf("\n");
-        printf("1.BUBBLE_SORT, 2.SELECTION_SORT, 3.INSERTION_SORT, 4.MERGE_SORT\n");
+        printf("1.BUBBLE_SORT_EFFICIENT, 2.SELECTION_SORT, 3.INSERTION_SORT, 4.MERGE_SORT\n");
         printf("5.MERGE_SORT_2, 6.MERGE_SORT_GFG, 7.QUICK_SORT, 8.SHELL_SORT, 99.DEL_ARRAY\n");
 
         printf("\n");
@@ -160,6 +161,18 @@ void do_selective_run()
                 p = create_array(n);
                 print_array(p, n, "INITIAL_ARRAY");
                 do_bubble_sort(p, n);
+                print_array(p, n, "SORTED ARRAY ");
+                free(p);
+                p = NULL;
+                printf("\n");
+                break;
+
+            case BUBBLE_SORT_OPTIMIZED:
+                printf("Enter n: ");
+                scanf("%d", &n);
+                p = create_array(n);
+                print_array(p, n, "INITIAL_ARRAY");
+                do_bubble_sort_optimized(p, n);
                 print_array(p, n, "SORTED ARRAY ");
                 free(p);
                 p = NULL;

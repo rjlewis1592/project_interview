@@ -2,7 +2,13 @@
 #include "sort_utils.h"
 #include "sort_ops.h"
 
+// 90, 10, 30, 50, 20
 void do_bubble_sort(int a[], int n)
+{
+
+}
+
+void do_bubble_sort_optimized(int a[], int n)
 {
     int i, j;
 

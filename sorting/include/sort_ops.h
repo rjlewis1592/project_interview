@@ -2,6 +2,7 @@
 #define SORT_OPS_H_
 
 void do_bubble_sort(int a[], int n);
+void do_bubble_sort_optimized(int a[], int n);
 void do_selection_sort(int a[], int n);
 void do_insertion_sort(int a[], int n);
 void do_merge_sort(int a[], int n);
