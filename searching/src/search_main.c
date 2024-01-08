@@ -7,6 +7,9 @@ enum {
     LINEAR_SERACH               = 1,
     RECURSIVE_BINARY_SEARCH     = 2,
     ITERATIVE_BINARY_SEARCH     = 3,
+    FIND_LARGEST                = 4,
+    FIND_SECOND_LARGEST         = 5,
+    FIND_SMALLEST               = 6,
     DEL_ARRAY                   = 98,
     DONE_EXIT                   = 99
 } SEARCH;
@@ -17,11 +20,14 @@ int main(int argc, char **argv)
     int op, key;
     int n, pos;
     bool found;
+    int largest, second_largest, smallest;
     int *arr = NULL;
 
     while (true) {
         printf("\n");
-        printf("1.LINEAR SEARCH, 2.RECURSIVE_BINARY_SEARCH, 3.ITERATIVE_BINARY_SEARCH, 98.DEL_ARRAY, 99.DONE_EXIT\n");
+        printf("1.LINEAR SEARCH, 2.RECURSIVE_BINARY_SEARCH, 3.ITERATIVE_BINARY_SEARCH\n");
+        printf("4.FIND_LARGEST, 5.FIND_SECOND_LARGEST, 6.FIND_SMALLEST\n");
+        printf("98.DEL_ARRAY, 99.DONE_EXIT\n");
         printf("Enter op: ");
         scanf("%d", &op);
 
@@ -92,6 +98,55 @@ int main(int argc, char **argv)
                     arr = NULL;
                 }
                 break;
+
+            case FIND_LARGEST:
+                printf("\n-------- FIND LARGEST ---------------\n");
+                n = get_random_n();
+                arr = create_array(n);
+                print_array(arr, n, "INITIAL_ARRAY");
+
+                largest = find_largest(arr, n);
+                printf("Largest element %d", largest);
+
+                if (arr) {
+                    //LOG_DBG("free()ing arr %p...", arr);
+                    free(arr);
+                    arr = NULL;
+                }
+                break;
+
+            case FIND_SECOND_LARGEST:
+                printf("\n-------- FIND SECOND LARGEST ---------------\n");
+                n = get_random_n();
+                arr = create_array(n);
+                print_array(arr, n, "INITIAL_ARRAY");
+
+                second_largest = find_largest(arr, n);
+                printf("Second largest element %d", second_largest);
+
+                if (arr) {
+                    //LOG_DBG("free()ing arr %p...", arr);
+                    free(arr);
+                    arr = NULL;
+                }
+                break;
+
+            case FIND_SMALLEST:
+                printf("\n-------- FIND SMALLEST ---------------\n");
+                n = get_random_n();
+                arr = create_array(n);
+                print_array(arr, n, "INITIAL_ARRAY");
+
+                smallest = find_smallest(arr, n);
+                printf("Smallest element %d", smallest);
+
+                if (arr) {
+                    //LOG_DBG("free()ing arr %p...", arr);
+                    free(arr);
+                    arr = NULL;
+                }
+                break;
+
             case DEL_ARRAY:
                 if (arr) {
                     LOG_DBG("free()ing arr %p...", arr);

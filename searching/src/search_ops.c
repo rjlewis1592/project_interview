@@ -104,3 +104,58 @@ bool do_iterative_binary_search(int arr[], int n, int key, int *pos)
 
     return false;
 }
+
+int find_largest(int a[], int n)
+{
+    int i;
+    int largest = INT_MIN;
+
+    for (i = 0; i < n; i++) {
+        if (a[i] > largest) {
+            largest = a[i];
+        }
+    }
+    return largest;
+}
+
+int find_second_largest(int a[], int n)
+{
+    int i;
+    int max, secnd_max;
+    bool int_min_valid_member = false;
+
+    if (n < 2) {
+        LOG_ERR("n = %d", n);
+        return INT_MIN;
+    }
+
+    max = secnd_max = INT_MIN;
+    for (i = 0; i < n; i ++) {
+        if (a[i] == INT_MIN) {
+            LOG_DBG("Oh Wow - that is very rare to have INT_MIN in an array !")
+        }
+        if (a[i] > max) {
+            secnd_max = max;
+            max = a[i];
+        } else if ((a[i] > secnd_max) && (a[i] != max)) {
+            secnd_max = a[i];
+        } else 
+    }
+
+
+
+    return INT_MIN;
+}
+
+int find_smallest(int a[], int n)
+{
+    int i;
+    int smallest = INT_MAX;
+
+    for (i = 0; i < n; i++) {
+        if (a[i] < smallest) {
+            smallest = a[i];
+        }
+    }
+    return smallest;
+}
