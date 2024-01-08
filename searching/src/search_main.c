@@ -10,6 +10,7 @@ enum {
     FIND_LARGEST                = 4,
     FIND_SECOND_LARGEST         = 5,
     FIND_SMALLEST               = 6,
+    FIND_SECOND_SMALLEST        = 7,
     DEL_ARRAY                   = 98,
     DONE_EXIT                   = 99
 } SEARCH;
@@ -20,13 +21,14 @@ int main(int argc, char **argv)
     int op, key;
     int n, pos;
     bool found;
-    int largest, second_largest, smallest;
+    int largest, second_largest, smallest, second_smallest;
+    int ret = 0;
     int *arr = NULL;
 
     while (true) {
         printf("\n");
         printf("1.LINEAR SEARCH, 2.RECURSIVE_BINARY_SEARCH, 3.ITERATIVE_BINARY_SEARCH\n");
-        printf("4.FIND_LARGEST, 5.FIND_SECOND_LARGEST, 6.FIND_SMALLEST\n");
+        printf("4.FIND_LARGEST, 5.FIND_SECOND_LARGEST, 6.FIND_SMALLEST, 7.FIND_SECOND_SMALLEST\n");
         printf("98.DEL_ARRAY, 99.DONE_EXIT\n");
         printf("Enter op: ");
         scanf("%d", &op);
@@ -121,8 +123,13 @@ int main(int argc, char **argv)
                 arr = create_array(n);
                 print_array(arr, n, "INITIAL_ARRAY");
 
-                second_largest = find_largest(arr, n);
-                printf("Second largest element %d", second_largest);
+                ret = 0;
+                ret = find_second_largest(arr, n, &second_largest);
+                if (ret == SEARCH_OPS_SUCCESS) {
+                    printf("Second largest element %d\n", second_largest);
+                } else {
+                    LOG_ERR("Error finding second largest");
+                }
 
                 if (arr) {
                     //LOG_DBG("free()ing arr %p...", arr);
@@ -139,6 +146,27 @@ int main(int argc, char **argv)
 
                 smallest = find_smallest(arr, n);
                 printf("Smallest element %d", smallest);
+
+                if (arr) {
+                    //LOG_DBG("free()ing arr %p...", arr);
+                    free(arr);
+                    arr = NULL;
+                }
+                break;
+
+            case FIND_SECOND_SMALLEST:
+                printf("\n-------- FIND SECOND SMALLEST ---------------\n");
+                n = get_random_n();
+                arr = create_array(n);
+                print_array(arr, n, "INITIAL_ARRAY");
+
+                ret = 0;
+                ret = find_second_smallest(arr, n, &second_smallest);
+                if (ret == SEARCH_OPS_SUCCESS) {
+                    printf("Second smallest element %d\n", second_smallest);
+                } else {
+                    LOG_ERR("Error finding second smallest");
+                }
 
                 if (arr) {
                     //LOG_DBG("free()ing arr %p...", arr);

@@ -105,57 +105,92 @@ bool do_iterative_binary_search(int arr[], int n, int key, int *pos)
     return false;
 }
 
-int find_largest(int a[], int n)
+int find_largest(int a[], int arr_sz)
 {
     int i;
     int largest = INT_MIN;
 
-    for (i = 0; i < n; i++) {
+    assert(arr_sz > 0);
+
+    for (i = 0; i < arr_sz; i++) {
         if (a[i] > largest) {
             largest = a[i];
         }
     }
+
     return largest;
 }
 
-int find_second_largest(int a[], int n)
+int find_second_largest(int a[], int arr_sz, int *second_largest)
 {
     int i;
     int max, secnd_max;
-    bool int_min_valid_member = false;
 
-    if (n < 2) {
-        LOG_ERR("n = %d", n);
-        return INT_MIN;
+    assert(second_largest != NULL);
+
+    if (arr_sz < 2) {
+        LOG_ERR("arr_sz = %d", arr_sz);
+        return SEARCH_OPS_FAILURE;
     }
 
     max = secnd_max = INT_MIN;
-    for (i = 0; i < n; i ++) {
-        if (a[i] == INT_MIN) {
-            LOG_DBG("Oh Wow - that is very rare to have INT_MIN in an array !")
-        }
+    for (i = 0; i < arr_sz; i ++) {
         if (a[i] > max) {
             secnd_max = max;
             max = a[i];
         } else if ((a[i] > secnd_max) && (a[i] != max)) {
             secnd_max = a[i];
-        } else 
+        }
     }
 
+    LOG_DBG("secnd_max = %d", secnd_max);
 
+    *second_largest = secnd_max;
 
-    return INT_MIN;
+    return SEARCH_OPS_SUCCESS;
 }
 
-int find_smallest(int a[], int n)
+int find_smallest(int a[], int arr_sz)
 {
     int i;
     int smallest = INT_MAX;
 
-    for (i = 0; i < n; i++) {
+    assert(arr_sz > 0);
+
+    for (i = 0; i < arr_sz; i++) {
         if (a[i] < smallest) {
             smallest = a[i];
         }
     }
+
     return smallest;
+}
+
+int find_second_smallest(int a[], int arr_sz, int *second_smallest)
+{
+    int i;
+    int min, secnd_min;
+
+    assert(second_smallest != NULL);
+
+    if (arr_sz < 2) {
+        LOG_ERR("arr_sz = %d", arr_sz);
+        return SEARCH_OPS_FAILURE;
+    }
+
+    min = secnd_min = INT_MAX;
+    for (i = 0; i < arr_sz; i ++) {
+        if (a[i] < min) {
+            secnd_min = min;
+            min = a[i];
+        } else if ((a[i] < secnd_min) && (a[i] != min)) {
+            secnd_min = a[i];
+        }
+    }
+
+    LOG_DBG("secnd_min = %d", secnd_min);
+
+    *second_smallest = secnd_min;
+
+    return SEARCH_OPS_SUCCESS;
 }
