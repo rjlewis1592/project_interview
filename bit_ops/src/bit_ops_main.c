@@ -17,7 +17,7 @@
 #define GET_BITS                    11
 #define SET_BITS                    12
 #define INVERT_BITS                 13
-#define RIGHT_ROTATE_BITS                14
+#define RIGHT_ROTATE_BITS           14
 
 int main()
 {
