@@ -126,6 +126,7 @@ int find_second_largest(int a[], int arr_sz, int *second_largest)
     int i;
     int max, secnd_max;
 
+    assert(arr_sz > 0);
     assert(second_largest != NULL);
 
     if (arr_sz < 2) {
@@ -133,19 +134,25 @@ int find_second_largest(int a[], int arr_sz, int *second_largest)
         return SEARCH_OPS_FAILURE;
     }
 
+
     max = secnd_max = INT_MIN;
     for (i = 0; i < arr_sz; i ++) {
         if (a[i] > max) {
             secnd_max = max;
             max = a[i];
-        } else if ((a[i] > secnd_max) && (a[i] != max)) {
+        } else if ((a[i] != max) && (a[i] > secnd_max)) {
             secnd_max = a[i];
         }
     }
 
-    LOG_DBG("max %d, secnd_max %d, *second_largest %d", max, secnd_max, *second_largest);
+    if (secnd_max == INT_MIN) {
+        LOG_DBG("NO second largest element in the array - identical array elements");
+        return SEARCH_OPS_FAILURE;
+    }
 
     *second_largest = secnd_max;
+
+    LOG_DBG("max %d, secnd_max %d, *second_largest %d", max, secnd_max, *second_largest);
 
     return SEARCH_OPS_SUCCESS;
 }
@@ -195,9 +202,8 @@ int find_second_smallest(int a[], int arr_sz, int *second_smallest)
     } 
 
     *second_smallest = secnd_min;
-    LOG_DBG("min %d, smin  %d, *second_smallest %d", min, secnd_min, *second_smallest);
 
-    *second_smallest = secnd_min;
+    LOG_DBG("min %d, smin  %d, *second_smallest %d", min, secnd_min, *second_smallest);
 
     return SEARCH_OPS_SUCCESS;
 }
