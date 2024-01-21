@@ -18,12 +18,37 @@ enum {
 
 int main(int argc, char **argv)
 {
-    int op, key;
-    int n, pos;
+    char ch;
     bool found;
+    int i, n, op, key, pos;
     int largest, second_largest, smallest, second_smallest;
     int ret = 0;
     int *arr = NULL;
+
+    printf("Create array manually? press 'y' for yes: ");
+    scanf(" %c", &ch);
+    if (ch == 'y') {
+        printf("Enter n (> 0): ");
+        scanf("%d", &n);
+        assert(n > 0);
+
+        arr = (int *)malloc(sizeof(int) * n);
+        if (arr == NULL) {
+            LOG_ERR("malloc(): %s (%d)", strerror(errno), errno);
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Enter %d array elements: ", n);
+        for (i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+    } else {
+        printf("creating array automatically...\n");
+        arr = create_array(&n);
+        LOG_DBG("n %d", n);
+    }
+
+    print_array(arr, n, "INITIAL_ARRAY");
 
     while (true) {
         printf("\n");
@@ -37,12 +62,6 @@ int main(int argc, char **argv)
         {
             case LINEAR_SERACH:
                 printf("\n-------- LINEAR SEARCH ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
-                printf("Enter the key to search: ");
-                scanf("%d", &key);
-
                 found = do_linear_search(arr, n, key, &pos);
                 if (found == true) {
                     LOG_DBG("key %d found! @ pos %d", key, pos);
@@ -59,9 +78,6 @@ int main(int argc, char **argv)
 
             case RECURSIVE_BINARY_SEARCH:
                 printf("\n-------- RECURSIVE BINARY SEARCH ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
                 printf("Enter the key to search: ");
                 scanf("%d", &key);
 
@@ -81,9 +97,6 @@ int main(int argc, char **argv)
 
             case ITERATIVE_BINARY_SEARCH:
                 printf("\n-------- ITERATIVE BINARY SEARCH ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
                 printf("Enter the key to search: ");
                 scanf("%d", &key);
 
@@ -103,8 +116,6 @@ int main(int argc, char **argv)
 
             case FIND_LARGEST:
                 printf("\n-------- FIND LARGEST ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
                 print_array(arr, n, "INITIAL_ARRAY");
 
                 largest = find_largest(arr, n);
@@ -119,9 +130,6 @@ int main(int argc, char **argv)
 
             case FIND_SECOND_LARGEST:
                 printf("\n-------- FIND SECOND LARGEST ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
 
                 ret = 0;
                 ret = find_second_largest(arr, n, &second_largest);
@@ -140,9 +148,6 @@ int main(int argc, char **argv)
 
             case FIND_SMALLEST:
                 printf("\n-------- FIND SMALLEST ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
 
                 smallest = find_smallest(arr, n);
                 printf("Smallest element %d", smallest);
@@ -156,16 +161,13 @@ int main(int argc, char **argv)
 
             case FIND_SECOND_SMALLEST:
                 printf("\n-------- FIND SECOND SMALLEST ---------------\n");
-                n = get_random_n();
-                arr = create_array(n);
-                print_array(arr, n, "INITIAL_ARRAY");
-
+    
                 ret = 0;
                 ret = find_second_smallest(arr, n, &second_smallest);
                 if (ret == SEARCH_OPS_SUCCESS) {
                     printf("Second smallest element %d\n", second_smallest);
                 } else {
-                    LOG_ERR("Error finding second smallest");
+                    LOG_ERR("Could not find second smallest element !");
                 }
 
                 if (arr) {

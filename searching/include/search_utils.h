@@ -3,8 +3,7 @@
 
 #include "search_cmn.h"
 
-int get_random_n();
-int *create_array(int n);
+int *create_array(int *out_n);
 void do_swap(int *x, int *y);
 int* dup_array(int *src, int n);
 void print_array(int *a, int n, const char *title);
