@@ -143,7 +143,7 @@ int find_second_largest(int a[], int arr_sz, int *second_largest)
         }
     }
 
-    LOG_DBG("secnd_max = %d", secnd_max);
+    LOG_DBG("max %d, secnd_max %d, *second_largest %d", max, secnd_max, *second_largest);
 
     *second_largest = secnd_max;
 
@@ -171,6 +171,7 @@ int find_second_smallest(int a[], int arr_sz, int *second_smallest)
     int i;
     int min, secnd_min;
 
+    assert(arr_sz > 0);
     assert(second_smallest != NULL);
 
     if (arr_sz < 2) {
@@ -188,7 +189,13 @@ int find_second_smallest(int a[], int arr_sz, int *second_smallest)
         }
     }
 
-    LOG_DBG("secnd_min = %d", secnd_min);
+    if (secnd_min == INT_MAX) {
+        LOG_DBG("NO second smallest element in the array !!");
+        return SEARCH_OPS_FAILURE;
+    } 
+
+    *second_smallest = secnd_min;
+    LOG_DBG("min %d, smin  %d, *second_smallest %d", min, secnd_min, *second_smallest);
 
     *second_smallest = secnd_min;
 

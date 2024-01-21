@@ -1,7 +1,9 @@
 #include "search_cmn.h"
 #include "search_utils.h"
 
-int get_random_n()
+static int get_random_n();
+
+static int get_random_n()
 {
     int random_n;
     int lower = 5;
@@ -14,12 +16,21 @@ int get_random_n()
     return random_n;
 }
 
-int *create_array(int n)
+int *create_array(int *out_n)
 {
-    int i, value;
+    int i, n, value;
     int *arr = NULL;
     int lower = 10;
     int upper = 100;
+
+    n = get_random_n();
+
+    LOG_DBG("n = %d", n);
+
+    assert(out_n != NULL);
+    *out_n = n; 
+
+    assert (n > 0);
 
     arr = (int *)malloc(sizeof(int) * n);
     if (arr == NULL) {
