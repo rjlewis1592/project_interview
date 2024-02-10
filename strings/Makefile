@@ -5,7 +5,7 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=$(PWD)/include/
 
-all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr my_strstr
+all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr my_strstr rev_individual_words
 
 my_strrev_one: $(OBJ)/my_strrev_one.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strrev_one.o  -o my_strrev_one
@@ -103,6 +103,13 @@ $(OBJ)/my_strstr.o: $(SRC)/my_strstr.c
 	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/my_strstr.c
 	mv my_strstr.o $(OBJ)
 
+rev_individual_words: $(OBJ)/rev_individual_words.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/rev_individual_words.o  -o rev_individual_words
+	mv rev_individual_words $(BIN)
+
+$(OBJ)/rev_individual_words.o: $(SRC)/rev_individual_words.c
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/rev_individual_words.c
+	mv rev_individual_words.o $(OBJ)
 
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
