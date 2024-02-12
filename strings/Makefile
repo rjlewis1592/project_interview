@@ -5,7 +5,7 @@ OBJ=$(PWD)/obj
 BIN=$(PWD)/bin
 INCLUDE=$(PWD)/include/
 
-all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr my_strstr rev_individual_words
+all: my_strcpy my_strcpy_ptr my_strcat my_strcat_ptr my_strncat my_strlen my_strlen_ptr my_strrev_one my_strncpy my_strncpy_ptr my_strstr rev_individual_words sort_strings
 
 my_strrev_one: $(OBJ)/my_strrev_one.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/my_strrev_one.o  -o my_strrev_one
@@ -110,6 +110,14 @@ rev_individual_words: $(OBJ)/rev_individual_words.o $(INCLUDE)/cmn_hdr.h $(INCLU
 $(OBJ)/rev_individual_words.o: $(SRC)/rev_individual_words.c
 	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/rev_individual_words.c
 	mv rev_individual_words.o $(OBJ)
+
+sort_strings: $(OBJ)/sort_strings.o $(INCLUDE)/cmn_hdr.h $(INCLUDE)/cmn_defs.h
+	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJ)/sort_strings.o  -o sort_strings
+	mv sort_strings $(BIN)
+
+$(OBJ)/sort_strings.o: $(SRC)/sort_strings.c
+	$(CC) $(CFLAGS) -I $(INCLUDE) -c $(SRC)/sort_strings.c
+	mv sort_strings.o $(OBJ)
 
 clean:
 	rm -rf $(OBJ)/*  $(BIN)/*
